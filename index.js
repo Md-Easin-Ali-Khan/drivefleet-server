@@ -1,3 +1,5 @@
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const dotenv = require('dotenv');
 const { MongoClient, ServerApiVersion } = require('mongodb');
@@ -5,8 +7,18 @@ dotenv.config()
 
 const uri = process.env.MONGODB_URI
 
-
 const app = express();
+
+// Middleware
+app.use(express.json());
+
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true
+}));
+
+app.use(cookieParser());
+
 const PORT = process.env.PORT
 
 const client = new MongoClient(uri, {
